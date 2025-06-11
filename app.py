@@ -53,7 +53,10 @@ def get_response(prompt: str) -> str:
         messages.append({"role": "user", "content": h["user"]})
         messages.append({"role": "assistant", "content": h["assistant"]})
     messages.append({"role": "user", "content": prompt})
-    response = openai.ChatCompletion.create(model="gpt-4", messages=messages)
+    try:
+        response = openai.ChatCompletion.create(model="gpt-4", messages=messages)
+    except openai.OpenAIError as e:
+        return f"Error from OpenAI API: {e}"
     answer = response["choices"][0]["message"]["content"]
     history.append({"user": prompt, "assistant": answer})
     return answer

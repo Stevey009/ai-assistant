@@ -10,10 +10,11 @@ This project aims to build a private personal assistant inspired by JARVIS. It u
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` file with your OpenAI API key (one is already included with a placeholder):
+2. Copy `.env.example` to `.env` and fill in your OpenAI API key:
 
-```
-OPENAI_API_KEY=your-api-key-here
+```bash
+cp .env.example .env
+echo "OPENAI_API_KEY=your-api-key" > .env
 ```
 
 3. Run the assistant:
