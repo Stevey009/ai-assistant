@@ -42,6 +42,9 @@ def append_log(user_msg, assistant_msg, rating=None):
 
 
 def get_response(prompt: str) -> str:
+    if not OPENAI_API_KEY:
+        return "OpenAI API key is missing."
+
     history = load_history()
     messages = [
         {"role": "system", "content": "You are a helpful personal assistant."},
@@ -57,7 +60,7 @@ def get_response(prompt: str) -> str:
 
 
 st.title("Personal AI Assistant")
-user_input = st.text_input("You:")
+user_input = st.text_input("You:", key="user_input")
 
 if st.button("Send"):
     if user_input:
@@ -65,7 +68,11 @@ if st.button("Send"):
             reply = get_response(user_input)
         st.markdown(f"**Assistant:** {reply}")
         rating = st.slider(
-            "Rate the response:", 1, 5, 3, key=f"rating_{len(st.session_state.history)}"
+            "Rate the response:",
+            1,
+            5,
+            3,
+            key=f"rating_{len(st.session_state.history)}",
         )
         append_log(user_input, reply, rating)
         st.session_state.user_input = ""
