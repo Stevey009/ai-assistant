@@ -10,7 +10,7 @@ This project aims to build a private personal assistant inspired by JARVIS. It u
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` file with your OpenAI API key (one is already included with a placeholder):
+2. Set your OpenAI API key. Locally, create a `.env` file (a placeholder is included) or add it to Streamlit Cloud secrets:
 
 ```
 OPENAI_API_KEY=your-api-key-here

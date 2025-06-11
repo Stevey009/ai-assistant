@@ -3,15 +3,16 @@ import json
 from datetime import datetime
 
 import streamlit as st
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    st.error("OPENAI_API_KEY not set in .env")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+if OPENAI_API_KEY:
+    client = OpenAI(api_key=OPENAI_API_KEY)
 else:
-    openai.api_key = OPENAI_API_KEY
+    client = None
+    st.error("OPENAI_API_KEY not set in environment or secrets")
 
 LOG_FILE = "journal.json"
 
@@ -50,8 +51,10 @@ def get_response(prompt: str) -> str:
         messages.append({"role": "user", "content": h["user"]})
         messages.append({"role": "assistant", "content": h["assistant"]})
     messages.append({"role": "user", "content": prompt})
-    response = openai.ChatCompletion.create(model="gpt-4", messages=messages)
-    answer = response["choices"][0]["message"]["content"]
+    if not client:
+        return "API key not configured."
+    response = client.chat.completions.create(model="gpt-4", messages=messages)
+    answer = response.choices[0].message.content
     history.append({"user": prompt, "assistant": answer})
     return answer
 
