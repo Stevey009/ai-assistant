@@ -22,6 +22,10 @@ OPENAI_API_KEY=your-api-key-here
 streamlit run app.py
 ```
 
+The app stores chat history in `journal.json`. When deploying, make sure the
+`OPENAI_API_KEY` environment variable is defined and that the process has write
+access to this file.
+
 ## Features
 
 - **Streamlit Chat UI** – chat with GPT‑4 in your browser.
